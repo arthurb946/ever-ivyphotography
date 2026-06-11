@@ -217,11 +217,8 @@
       display: flex;
       gap: 12px;
       width: max-content;
-      animation: stripScroll 48s linear infinite;
       will-change: transform;
     }
-
-    .hero__strip:hover .hero__strip-track { animation-play-state: paused; }
 
     @keyframes stripScroll {
       from { transform: translateX(0); }
@@ -229,15 +226,12 @@
     }
 
     .hero__strip img {
-      height: 86px;
+      height: 96px;
       width: auto;
       border-radius: 6px;
-      opacity: 0.85;
+      opacity: 0.88;
       flex-shrink: 0;
-      transition: opacity 0.3s ease;
     }
-
-    .hero__strip img:hover { opacity: 1; }
 
     .hero__eyebrow {
       display: block;
@@ -441,6 +435,12 @@
     .gallery__item:nth-child(8)  { width: clamp(220px, 22vw, 300px); height: clamp(300px, 42vh, 480px); margin-bottom: 30px; }
     .gallery__item:nth-child(9)  { width: clamp(280px, 30vw, 420px); height: clamp(320px, 44vh, 500px); }
     .gallery__item:nth-child(10) { width: clamp(240px, 26vw, 360px); height: clamp(340px, 48vh, 520px); margin-bottom: 30px; }
+    .gallery__item:nth-child(11) { width: clamp(260px, 28vw, 380px); height: clamp(310px, 42vh, 480px); }
+    .gallery__item:nth-child(12) { width: clamp(310px, 34vw, 460px); height: clamp(350px, 48vh, 530px); margin-bottom: 30px; }
+    .gallery__item:nth-child(13) { width: clamp(220px, 24vw, 320px); height: clamp(300px, 40vh, 460px); }
+    .gallery__item:nth-child(14) { width: clamp(280px, 30vw, 420px); height: clamp(330px, 46vh, 510px); margin-bottom: 30px; }
+    .gallery__item:nth-child(15) { width: clamp(300px, 32vw, 440px); height: clamp(340px, 44vh, 500px); }
+    .gallery__item:nth-child(16) { width: clamp(240px, 26vw, 360px); height: clamp(320px, 44vh, 490px); margin-bottom: 30px; }
 
     .gallery__item img {
       width: 100%; height: 100%;
@@ -741,7 +741,7 @@
     @media (max-width: 768px) {
       .nav__links      { display: none; }
       /* Filmstrip: smaller images, keep the motion */
-      .hero__strip img { height: 64px; }
+      .hero__strip img { height: 72px; }
       .hero__content   { padding-bottom: clamp(120px, 18vh, 160px); }
       /* Day section: hide images, show bg colour + text only */
       .day__img        { display: none; }
@@ -759,7 +759,6 @@
         transition-duration: 0.01ms !important;
       }
       .hero__bg                                         { animation: none; }
-      .hero__strip-track                                { animation: none; }
       .hero__eyebrow, .hero__headline, .hero__sub,
       .hero__link                                       { opacity: 1; transform: none; }
       .reveal                                           { opacity: 1; transform: none; }
@@ -977,6 +976,36 @@
                alt="Wedding gallery 10" loading="lazy" width="520" height="520" />
         </div>
 
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=80&w=987&auto=format&fit=crop"
+               alt="Wedding gallery 11" loading="lazy" width="560" height="480" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=80&w=1770&auto=format&fit=crop"
+               alt="Wedding gallery 12" loading="lazy" width="620" height="530" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1770&auto=format&fit=crop"
+               alt="Wedding gallery 13" loading="lazy" width="440" height="460" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=1770&auto=format&fit=crop&q=80"
+               alt="Wedding gallery 14" loading="lazy" width="560" height="510" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1680695605446-600ab4c8145a?q=80&w=987&auto=format&fit=crop"
+               alt="Wedding gallery 15" loading="lazy" width="480" height="500" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=80&w=987&auto=format&fit=crop"
+               alt="Wedding gallery 16" loading="lazy" width="480" height="490" />
+        </div>
+
       </div>
     </div>
 
@@ -1149,6 +1178,42 @@
     window.addEventListener('load', () => {
       document.querySelector('.hero').classList.add('hero-ready');
     });
+
+    /* ─── FILMSTRIP rAF MARQUEE ──────────────
+       CSS infinite animations can be throttled
+       or paused by browsers. rAF never stops.
+    ─────────────────────────────────────── */
+    (function () {
+      const track = document.querySelector('.hero__strip-track');
+      if (!track) return;
+
+      // Wait for images to have natural widths
+      const start = () => {
+        const halfW   = track.scrollWidth / 2;
+        let   pos     = 0;
+        const speed   = 0.55; // px per frame (~33px/s at 60fps)
+        let   rafId;
+        let   paused  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (paused) return; // respect reduced motion
+
+        const tick = () => {
+          pos -= speed;
+          if (pos <= -halfW) pos = 0; // seamless reset
+          track.style.transform = `translate3d(${pos}px, 0, 0)`;
+          rafId = requestAnimationFrame(tick);
+        };
+
+        rafId = requestAnimationFrame(tick);
+      };
+
+      // Start once images have dimensions
+      if (document.readyState === 'complete') {
+        start();
+      } else {
+        window.addEventListener('load', start);
+      }
+    })();
 
 
     /* ─── INTERSECTION OBSERVER REVEALS ─── */
