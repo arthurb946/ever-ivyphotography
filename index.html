@@ -408,6 +408,7 @@
 
     /* Pinned stage */
     .gallery__stage {
+      position: relative;
       overflow: hidden;
       height: 100vh;
       display: flex;
@@ -430,12 +431,16 @@
     }
 
     /* Varying dimensions for visual rhythm */
-    .gallery__item:nth-child(1) { width: clamp(240px, 26vw, 360px); height: clamp(310px, 42vh, 480px); }
-    .gallery__item:nth-child(2) { width: clamp(280px, 30vw, 420px); height: clamp(360px, 50vh, 540px); margin-bottom: 30px; }
-    .gallery__item:nth-child(3) { width: clamp(200px, 20vw, 280px); height: clamp(280px, 38vh, 420px); }
-    .gallery__item:nth-child(4) { width: clamp(300px, 34vw, 460px); height: clamp(340px, 46vh, 510px); margin-bottom: 30px; }
-    .gallery__item:nth-child(5) { width: clamp(220px, 24vw, 320px); height: clamp(300px, 40vh, 460px); }
-    .gallery__item:nth-child(6) { width: clamp(260px, 28vw, 380px); height: clamp(320px, 44vh, 490px); margin-bottom: 30px; }
+    .gallery__item:nth-child(1)  { width: clamp(240px, 26vw, 360px); height: clamp(310px, 42vh, 480px); }
+    .gallery__item:nth-child(2)  { width: clamp(280px, 30vw, 420px); height: clamp(360px, 50vh, 540px); margin-bottom: 30px; }
+    .gallery__item:nth-child(3)  { width: clamp(200px, 20vw, 280px); height: clamp(280px, 38vh, 420px); }
+    .gallery__item:nth-child(4)  { width: clamp(300px, 34vw, 460px); height: clamp(340px, 46vh, 510px); margin-bottom: 30px; }
+    .gallery__item:nth-child(5)  { width: clamp(220px, 24vw, 320px); height: clamp(300px, 40vh, 460px); }
+    .gallery__item:nth-child(6)  { width: clamp(260px, 28vw, 380px); height: clamp(320px, 44vh, 490px); margin-bottom: 30px; }
+    .gallery__item:nth-child(7)  { width: clamp(300px, 32vw, 440px); height: clamp(340px, 46vh, 510px); }
+    .gallery__item:nth-child(8)  { width: clamp(220px, 22vw, 300px); height: clamp(300px, 42vh, 480px); margin-bottom: 30px; }
+    .gallery__item:nth-child(9)  { width: clamp(280px, 30vw, 420px); height: clamp(320px, 44vh, 500px); }
+    .gallery__item:nth-child(10) { width: clamp(240px, 26vw, 360px); height: clamp(340px, 48vh, 520px); margin-bottom: 30px; }
 
     .gallery__item img {
       width: 100%; height: 100%;
@@ -803,18 +808,18 @@
     <div class="hero__strip" aria-hidden="true">
       <div class="hero__strip-track">
         <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=60&w=340&auto=format&fit=crop" alt="" loading="eager" width="200" height="130" />
+        <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=340&auto=format&fit=crop&q=60" alt="" loading="eager" width="200" height="130" />
         <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=60&w=420&auto=format&fit=crop" alt="" loading="eager" width="260" height="130" />
-        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
+        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
         <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="250" height="130" />
         <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="210" height="130" />
         <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
         <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="230" height="130" />
         <!-- Duplicate set — required for the seamless -50% loop -->
         <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=60&w=340&auto=format&fit=crop" alt="" loading="eager" width="200" height="130" />
+        <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=340&auto=format&fit=crop&q=60" alt="" loading="eager" width="200" height="130" />
         <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=60&w=420&auto=format&fit=crop" alt="" loading="eager" width="260" height="130" />
-        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
+        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
         <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="250" height="130" />
         <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="210" height="130" />
         <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
@@ -835,7 +840,7 @@
     <!-- Image layers — stack via position:absolute, right 55% -->
     <!-- REPLACE: soft morning light — bridesmaids, quiet details, cool mist tones -->
     <div class="day__img" id="img-morning">
-      <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=1770&auto=format&fit=crop"
+      <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=1770&auto=format&fit=crop&q=80"
            alt="Morning preparations" loading="lazy" width="900" height="1100" />
     </div>
 
@@ -847,7 +852,7 @@
 
     <!-- REPLACE: golden hour couple portrait — backlit, warm amber, open landscape -->
     <div class="day__img" id="img-golden">
-      <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=987&auto=format&fit=crop"
+      <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=80&w=987&auto=format&fit=crop"
            alt="Golden hour portraits" loading="lazy" width="900" height="1100" />
     </div>
 
@@ -948,8 +953,28 @@
 
         <!-- REPLACE: golden hour backlit portrait — strong silhouette or warm glow -->
         <div class="gallery__item">
-          <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=987&auto=format&fit=crop"
+          <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=80&w=987&auto=format&fit=crop"
                alt="Wedding gallery 6" loading="lazy" width="580" height="490" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=1770&auto=format&fit=crop&q=80"
+               alt="Wedding gallery 7" loading="lazy" width="640" height="510" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1684597619632-471f18b09d12?q=80&w=1771&auto=format&fit=crop"
+               alt="Wedding gallery 8" loading="lazy" width="500" height="480" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=80&w=1771&auto=format&fit=crop"
+               alt="Wedding gallery 9" loading="lazy" width="560" height="500" />
+        </div>
+
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=80&w=1770&auto=format&fit=crop"
+               alt="Wedding gallery 10" loading="lazy" width="520" height="520" />
         </div>
 
       </div>
@@ -1230,13 +1255,14 @@
          Pins .gallery__stage. Translates
          .gallery__track left by exactly the
          amount needed to show all items.
+         Must run after window.load so image
+         widths are known before we measure.
       ─────────────────────────────────── */
       const galleryStage = document.getElementById('galleryStage');
       const galleryTrack = document.getElementById('galleryTrack');
 
-      // Recalculate on resize via invalidateOnRefresh
       const buildGallery = () => {
-        if (window.innerWidth <= 768) return; // mobile uses stacked layout
+        if (window.innerWidth <= 768) return;
 
         const scrollDist = galleryTrack.scrollWidth - window.innerWidth;
         if (scrollDist <= 0) return;
@@ -1256,8 +1282,12 @@
         });
       };
 
-      // Run after a frame so layout is finalised
-      requestAnimationFrame(buildGallery);
+      // Use load event — not rAF — so all image widths are computed
+      if (document.readyState === 'complete') {
+        buildGallery();
+      } else {
+        window.addEventListener('load', buildGallery);
+      }
 
     } else if (prefersReducedMotion) {
       // Reduced motion: show morning chapter statically
