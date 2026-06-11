@@ -319,6 +319,37 @@
     #img-morning { opacity: 1; }
 
     /* ── Chapter text ── */
+    /* ── Ghost timestamps — fill the left field, encode the passing day ── */
+    .day__time {
+      position: absolute;
+      bottom: clamp(8px, 4vh, 40px);
+      left: clamp(12px, 3vw, 48px);
+      z-index: 1;
+      display: grid;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .day__stamp {
+      grid-area: 1 / 1;
+      font-family: var(--display);
+      font-optical-sizing: auto;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(6rem, 19vw, 17rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      opacity: 0;
+      will-change: opacity;
+      white-space: nowrap;
+    }
+
+    #t-morning { opacity: 0.06; }
+
+    /* Evening stamp sits on dark ink — needs light colour */
+    #t-evening { color: #F9F7F5; }
+
     .day__content {
       position: absolute;
       top: 50%;
@@ -905,6 +936,14 @@
 
     </div>
 
+    <!-- Ghost timestamps — one per chapter, stacked, scrub-faded -->
+    <div class="day__time" aria-hidden="true">
+      <span class="day__stamp" id="t-morning">07:48</span>
+      <span class="day__stamp" id="t-ceremony">13:02</span>
+      <span class="day__stamp" id="t-golden">19:36</span>
+      <span class="day__stamp" id="t-evening">23:51</span>
+    </div>
+
     <!-- Progress dots -->
     <div class="day__dots" id="dayDots" aria-hidden="true">
       <div class="day__dot active"></div>
@@ -1320,26 +1359,32 @@
       dayTl
         .to({}, { duration: 1.5 })   // dwell on morning before anything moves
         .to('#ch-morning',  { opacity: 0, y: -18, duration: 0.5 })
+        .to('#t-morning',   { opacity: 0, duration: 0.5 }, '<')
         .to(daySection,     { backgroundColor: '#F7F4EF', duration: 1.2 }, '<')
         .to('#img-morning', { opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 },  '<')
         .to('#img-ceremony',{ opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 },  '<0.3')
         .to('#ch-ceremony', { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
+        .to('#t-ceremony',  { opacity: 0.06, duration: 0.55 }, '<')
         .to({}, { duration: 1.5 })   // dwell on ceremony
 
       // ── Ceremony → Golden Hour ──
         .to('#ch-ceremony', { opacity: 0, y: -18, duration: 0.5 })
+        .to('#t-ceremony',  { opacity: 0, duration: 0.5 }, '<')
         .to(daySection,     { backgroundColor: '#EDD897', duration: 1.2 }, '<')
         .to('#img-ceremony',{ opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 }, '<')
         .to('#img-golden',  { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 }, '<0.3')
         .to('#ch-golden',   { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
+        .to('#t-golden',    { opacity: 0.07, duration: 0.55 }, '<')
         .to({}, { duration: 1.5 })   // dwell on golden
 
       // ── Golden Hour → Evening ──
         .to('#ch-golden',   { opacity: 0, y: -18, duration: 0.5 })
+        .to('#t-golden',    { opacity: 0, duration: 0.5 }, '<')
         .to(daySection,     { backgroundColor: '#1B1829', duration: 1.2 }, '<')
         .to('#img-golden',  { opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 }, '<')
         .to('#img-evening', { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 }, '<0.3')
         .to('#ch-evening',  { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
+        .to('#t-evening',   { opacity: 0.08, duration: 0.55 }, '<')
         .to({}, { duration: 1.5 });  // dwell on evening
 
 
