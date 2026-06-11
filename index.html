@@ -733,52 +733,6 @@
     .d3 { transition-delay: 0.36s; }
     .d4 { transition-delay: 0.50s; }
 
-    /* ─── BOTANICALS ──────────────────────── */
-    .gallery__header { position: relative; overflow: visible; }
-    .about            { position: relative; }
-
-    .botanical {
-      position: absolute;
-      pointer-events: none;
-      overflow: visible;
-    }
-
-    .botanical path {
-      fill: none;
-      stroke: #B8C9B5;
-      stroke-width: 1.3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Gallery — eucalyptus sprig, bottom-right of header, clear of the heading */
-    .botanical--gallery {
-      bottom: -30px;
-      right: clamp(32px, 6vw, 96px);
-      height: 280px;
-      width: auto;
-      z-index: 0;
-    }
-
-    /* About — sprig lives in the outer page margin, right of the text column.
-       Anchored to the section, not the text, so it can never overlap copy. */
-    .botanical--about {
-      bottom: 60px;
-      right: clamp(16px, 2.5vw, 56px);
-      height: 300px;
-      width: auto;
-      z-index: 0;
-    }
-
-    /* Hide about sprig when the outer margin is too narrow to hold it */
-    @media (max-width: 1380px) {
-      .botanical--about { display: none; }
-    }
-
-    @media (max-width: 768px) {
-      .botanical { display: none; }
-    }
-
     /* ─── RESPONSIVE ──────────────────────── */
     @media (max-width: 900px) {
       .about__inner    { grid-template-columns: 1fr; }
@@ -976,28 +930,7 @@
         </p>
       </div>
 
-      <!-- Botanical A: single wildflower, grows stem→leaves→petals on scroll -->
-      <svg class="botanical botanical--gallery"
-           viewBox="0 0 110 320"
-           xmlns="http://www.w3.org/2000/svg"
-           aria-hidden="true">
-        <!-- Stem: one gentle S-curve -->
-        <path d="M58 318 C52 270 64 224 56 178 C50 140 60 96 55 50 C53 32 56 14 55 2"/>
-        <!-- Leaf pairs: simple closed teardrops, large at base, small at tip -->
-        <path d="M57 290 C38 284 26 270 29 256 C45 259 55 274 57 290 Z"/>
-        <path d="M58 268 C77 262 89 248 86 234 C70 237 60 252 58 268 Z"/>
-        <path d="M56 232 C39 226 28 213 31 200 C46 203 54 217 56 232 Z"/>
-        <path d="M57 208 C74 202 85 189 82 176 C67 179 59 193 57 208 Z"/>
-        <path d="M55 172 C40 167 30 155 33 143 C46 146 53 159 55 172 Z"/>
-        <path d="M56 150 C71 145 81 133 78 121 C65 124 58 137 56 150 Z"/>
-        <path d="M55 116 C42 112 33 101 36 90 C48 93 54 105 55 116 Z"/>
-        <path d="M55 94 C68 90 77 79 74 68 C62 71 56 83 55 94 Z"/>
-        <path d="M54 62 C44 58 37 49 39 40 C49 42 53 52 54 62 Z"/>
-        <path d="M55 42 C65 38 72 29 70 20 C60 22 56 32 55 42 Z"/>
-        <!-- Tip leaf -->
-        <path d="M55 2 C49 10 49 20 55 24 C61 20 61 10 55 2 Z"/>
-      </svg>
-    </div>
+</div>
 
     <!-- Pinned scroll stage -->
     <div class="gallery__stage" id="galleryStage">
@@ -1123,26 +1056,7 @@
           Work together <span aria-hidden="true">→</span>
         </a>
 
-        <!-- Botanical B: branching meadow plant, grows on scroll -->
-        <svg class="botanical botanical--about"
-             viewBox="0 0 100 300"
-             xmlns="http://www.w3.org/2000/svg"
-             aria-hidden="true">
-          <!-- Stem -->
-          <path d="M50 298 C46 252 56 208 49 164 C44 130 53 92 49 48 C47 32 50 14 49 2"/>
-          <!-- Leaf pairs -->
-          <path d="M50 272 C33 266 23 253 26 240 C40 243 48 257 50 272 Z"/>
-          <path d="M51 248 C68 242 78 229 75 216 C61 219 53 233 51 248 Z"/>
-          <path d="M49 214 C34 209 25 197 28 185 C40 188 47 200 49 214 Z"/>
-          <path d="M50 190 C65 185 74 173 71 161 C59 164 52 177 50 190 Z"/>
-          <path d="M48 156 C35 152 27 141 30 130 C41 133 47 144 48 156 Z"/>
-          <path d="M49 134 C62 130 70 119 67 108 C56 111 50 122 49 134 Z"/>
-          <path d="M48 100 C37 96 30 87 32 77 C42 79 47 89 48 100 Z"/>
-          <path d="M49 78 C60 74 67 65 65 55 C55 57 50 67 49 78 Z"/>
-          <!-- Tip leaf -->
-          <path d="M49 2 C43 10 43 20 49 24 C55 20 55 10 49 2 Z"/>
-        </svg>
-      </div>
+</div>
 
     </div>
   </section>
@@ -1396,29 +1310,35 @@
         }
       });
 
+      // Incoming images start slightly small and soft — set once upfront
+      gsap.set(['#img-ceremony', '#img-golden', '#img-evening'], {
+        scale: 0.94,
+        filter: 'blur(6px)',
+      });
+
       // ── Morning → Ceremony ──
       dayTl
         .to({}, { duration: 1.5 })   // dwell on morning before anything moves
         .to('#ch-morning',  { opacity: 0, y: -18, duration: 0.5 })
         .to(daySection,     { backgroundColor: '#F7F4EF', duration: 1.2 }, '<')
-        .to('#img-morning', { opacity: 0, duration: 0.9 },  '<')
-        .to('#img-ceremony',{ opacity: 1, duration: 0.9 },  '<0.3')
+        .to('#img-morning', { opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 },  '<')
+        .to('#img-ceremony',{ opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 },  '<0.3')
         .to('#ch-ceremony', { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
         .to({}, { duration: 1.5 })   // dwell on ceremony
 
       // ── Ceremony → Golden Hour ──
         .to('#ch-ceremony', { opacity: 0, y: -18, duration: 0.5 })
         .to(daySection,     { backgroundColor: '#EDD897', duration: 1.2 }, '<')
-        .to('#img-ceremony',{ opacity: 0, duration: 0.9 }, '<')
-        .to('#img-golden',  { opacity: 1, duration: 0.9 }, '<0.3')
+        .to('#img-ceremony',{ opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 }, '<')
+        .to('#img-golden',  { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 }, '<0.3')
         .to('#ch-golden',   { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
         .to({}, { duration: 1.5 })   // dwell on golden
 
       // ── Golden Hour → Evening ──
         .to('#ch-golden',   { opacity: 0, y: -18, duration: 0.5 })
         .to(daySection,     { backgroundColor: '#1B1829', duration: 1.2 }, '<')
-        .to('#img-golden',  { opacity: 0, duration: 0.9 }, '<')
-        .to('#img-evening', { opacity: 1, duration: 0.9 }, '<0.3')
+        .to('#img-golden',  { opacity: 0, scale: 1.08, filter: 'blur(6px)', duration: 0.9 }, '<')
+        .to('#img-evening', { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9 }, '<0.3')
         .to('#ch-evening',  { opacity: 1, y: 0, duration: 0.55 }, '<0.4')
         .to({}, { duration: 1.5 });  // dwell on evening
 
@@ -1460,37 +1380,6 @@
       } else {
         window.addEventListener('load', buildGallery);
       }
-
-      /* ── BOTANICAL GROWTH ─────────────────
-         Paths draw sequentially: stem → leaves
-         low to high → flower head.
-         getTotalLength() gives the exact dash
-         value for every path shape.
-      ─────────────────────────────────────── */
-      document.querySelectorAll('.botanical').forEach(svg => {
-        const paths = Array.from(svg.querySelectorAll('path'));
-
-        // One-time draw when the section enters — not scrubbed.
-        // Stem draws over 1.2s, then each leaf pops in sequence.
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: svg.closest('section') || svg.closest('.gallery__header') || svg.parentElement,
-            start: 'top 65%',
-            toggleActions: 'play none none none',
-          }
-        });
-
-        paths.forEach((path, i) => {
-          const len = path.getTotalLength();
-          path.style.strokeDasharray = len;
-          path.style.strokeDashoffset = len;
-          tl.to(path, {
-            strokeDashoffset: 0,
-            ease: 'power2.out',
-            duration: i === 0 ? 1.2 : 0.5,  // stem slow, leaves quick
-          }, i === 0 ? 0 : 0.7 + i * 0.18);
-        });
-      });
 
     } else if (prefersReducedMotion) {
       // Reduced motion: show morning chapter statically
