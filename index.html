@@ -739,17 +739,40 @@
     }
 
     @media (max-width: 768px) {
-      .nav__links      { display: none; }
-      /* Filmstrip: smaller images, keep the motion */
+      /* Nav: hide text links, keep Enquire CTA */
+      .nav__links li:not(:last-child) { display: none; }
+
+      /* Hero */
+      .hero__content   { padding-bottom: clamp(130px, 18vh, 170px); }
       .hero__strip img { height: 72px; }
-      .hero__content   { padding-bottom: clamp(120px, 18vh, 160px); }
+
       /* Day section: hide images, show bg colour + text only */
       .day__img        { display: none; }
       .day__content    { width: 100%; padding-inline: clamp(24px, 6vw, 44px); }
-      /* Gallery: disable horizontal scroll on mobile, show stacked grid */
+
+      /* Gallery: single column on mobile */
       .gallery__stage  { height: auto; overflow: visible; }
-      .gallery__track  { flex-wrap: wrap; width: 100%; padding-inline: var(--gutter); }
-      .gallery__item   { width: calc(50% - 7px) !important; height: 220px !important; margin-bottom: 0 !important; }
+      .gallery__track  { flex-wrap: wrap; width: 100%; padding-inline: var(--gutter); gap: 10px; }
+      .gallery__item   { width: calc(50% - 5px) !important; height: 200px !important; margin-bottom: 0 !important; border-radius: 8px; }
+
+      /* About: tighten */
+      .about__inner    { gap: 32px; }
+
+      /* Packages: full width cards */
+      .pkg-grid        { grid-template-columns: 1fr; max-width: 100%; }
+      .pkg             { padding: 28px 24px; }
+
+      /* Testimonial */
+      .testimonial__q  { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+
+      /* Footer: stack */
+      .footer__row     { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .footer__nav     { gap: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery__item   { width: 100% !important; height: 240px !important; }
+      .hero__headline  { font-size: clamp(2.6rem, 11vw, 3.5rem); }
     }
 
     /* ─── REDUCED MOTION ──────────────────── */
@@ -801,28 +824,20 @@
       </a>
     </div>
 
-    <!-- Filmstrip marquee — track is duplicated for seamless loop.
-         REPLACE: 8 small landscape shots from different weddings.
-         Variety matters here: mix detail shots, candids, landscapes. -->
+    <!-- Filmstrip — JS clones these until they fill the viewport.
+         10 unique images. REPLACE with your own shots when ready. -->
     <div class="hero__strip" aria-hidden="true">
-      <div class="hero__strip-track">
-        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=340&auto=format&fit=crop&q=60" alt="" loading="eager" width="200" height="130" />
-        <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=60&w=420&auto=format&fit=crop" alt="" loading="eager" width="260" height="130" />
-        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
-        <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="250" height="130" />
-        <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="210" height="130" />
-        <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="230" height="130" />
-        <!-- Duplicate set — required for the seamless -50% loop -->
-        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?w=340&auto=format&fit=crop&q=60" alt="" loading="eager" width="200" height="130" />
-        <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=60&w=420&auto=format&fit=crop" alt="" loading="eager" width="260" height="130" />
-        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="220" height="130" />
-        <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="250" height="130" />
-        <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="210" height="130" />
-        <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" width="240" height="130" />
-        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=200&auto=format&fit=crop" alt="" loading="eager" width="230" height="130" />
+      <div class="hero__strip-track" id="stripTrack">
+        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=60&w=160&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=60&w=160&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1680695605446-600ab4c8145a?q=60&w=160&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1684597619632-471f18b09d12?q=60&w=400&auto=format&fit=crop" alt="" loading="eager" />
+        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=60&w=160&auto=format&fit=crop" alt="" loading="eager" />
       </div>
     </div>
   </section>
@@ -1180,38 +1195,50 @@
     });
 
     /* ─── FILMSTRIP rAF MARQUEE ──────────────
-       CSS infinite animations can be throttled
-       or paused by browsers. rAF never stops.
+       Clones items until the strip is 2.5×
+       the viewport wide — works on any screen.
+       Resets at the exact width of one set so
+       the loop is always seamless.
     ─────────────────────────────────────── */
     (function () {
-      const track = document.querySelector('.hero__strip-track');
+      const track = document.getElementById('stripTrack');
       if (!track) return;
 
-      // Wait for images to have natural widths
-      const start = () => {
-        const halfW   = track.scrollWidth / 2;
-        let   pos     = 0;
-        const speed   = 0.55; // px per frame (~33px/s at 60fps)
-        let   rafId;
-        let   paused  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const init = () => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced) return;
 
-        if (paused) return; // respect reduced motion
+        // Snapshot original items before any cloning
+        const origItems = Array.from(track.children);
+        if (!origItems.length) return;
+
+        // Clone in full-set batches until strip fills the viewport
+        const target = window.innerWidth * 2.5;
+        while (track.scrollWidth < target) {
+          origItems.forEach(el => track.appendChild(el.cloneNode(true)));
+        }
+
+        // One set width = total / number of sets added
+        const sets     = track.children.length / origItems.length;
+        const setWidth = track.scrollWidth / sets;
+
+        let   pos   = 0;
+        const speed = 0.55; // px per frame
 
         const tick = () => {
           pos -= speed;
-          if (pos <= -halfW) pos = 0; // seamless reset
+          if (pos <= -setWidth) pos += setWidth; // seamless reset
           track.style.transform = `translate3d(${pos}px, 0, 0)`;
-          rafId = requestAnimationFrame(tick);
+          requestAnimationFrame(tick);
         };
 
-        rafId = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
       };
 
-      // Start once images have dimensions
       if (document.readyState === 'complete') {
-        start();
+        init();
       } else {
-        window.addEventListener('load', start);
+        window.addEventListener('load', init);
       }
     })();
 
