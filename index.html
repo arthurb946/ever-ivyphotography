@@ -732,6 +732,50 @@
     .d3 { transition-delay: 0.36s; }
     .d4 { transition-delay: 0.50s; }
 
+    /* ─── BOTANICALS ──────────────────────── */
+    .gallery__header { position: relative; overflow: visible; }
+    .about__text     { position: relative; }
+
+    .botanical {
+      position: absolute;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .botanical path {
+      fill: none;
+      stroke: #B8C9B5;
+      stroke-width: 1.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Gallery — tall stem, bottom-right of header */
+    .botanical--gallery {
+      bottom: -24px;
+      right: clamp(32px, 6vw, 96px);
+      height: 230px;
+      width: auto;
+      z-index: 0;
+    }
+
+    /* About — branching meadow, right edge of text column */
+    .botanical--about {
+      bottom: 0;
+      right: -16px;
+      height: 180px;
+      width: auto;
+      z-index: 0;
+    }
+
+    @media (max-width: 900px) {
+      .botanical--about { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .botanical { display: none; }
+    }
+
     /* ─── RESPONSIVE ──────────────────────── */
     @media (max-width: 900px) {
       .about__inner    { grid-template-columns: 1fr; }
@@ -929,6 +973,31 @@
           Scroll to explore
         </p>
       </div>
+
+      <!-- Botanical A: single wildflower, grows stem→leaves→petals on scroll -->
+      <svg class="botanical botanical--gallery"
+           viewBox="0 -10 90 298"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-hidden="true">
+        <!-- 1. Stem -->
+        <path d="M45 287 C43 242 47 196 45 150 C43 104 46 58 45 0"/>
+        <!-- 2. Leaf left 1 -->
+        <path d="M45 230 C22 214 10 190 18 170 C26 150 45 160 45 182"/>
+        <!-- 3. Leaf right 1 -->
+        <path d="M45 202 C68 186 80 162 72 142 C64 122 45 132 45 154"/>
+        <!-- 4. Leaf left 2 -->
+        <path d="M45 145 C24 131 13 109 21 91 C29 73 45 82 45 103"/>
+        <!-- 5. Leaf right 2 -->
+        <path d="M45 120 C66 106 77 84 69 66 C61 48 45 57 45 78"/>
+        <!-- 6. Bud -->
+        <path d="M45 58 C32 50 26 36 32 26 C38 16 45 22 45 36"/>
+        <!-- 7. Petal left -->
+        <path d="M45 0 C32 -10 18 -5 22 6 C26 17 44 14 45 0"/>
+        <!-- 8. Petal right -->
+        <path d="M45 0 C58 -10 72 -5 68 6 C64 17 46 14 45 0"/>
+        <!-- 9. Petal bottom -->
+        <path d="M45 0 C38 10 37 23 45 26 C53 23 52 10 45 0"/>
+      </svg>
     </div>
 
     <!-- Pinned scroll stage -->
@@ -1054,6 +1123,31 @@
         <a href="#enquiry" class="link-arrow reveal d4">
           Work together <span aria-hidden="true">→</span>
         </a>
+
+        <!-- Botanical B: branching meadow plant, grows on scroll -->
+        <svg class="botanical botanical--about"
+             viewBox="-6 -16 148 214"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true">
+          <!-- 1. Main stem -->
+          <path d="M25 198 C23 166 27 133 25 100 C23 67 26 36 25 6"/>
+          <!-- 2. Branch right -->
+          <path d="M25 140 C50 126 76 120 96 126 C110 130 114 143 104 151"/>
+          <!-- 3. Leaf on right branch -->
+          <path d="M96 126 C103 112 117 108 120 118 C123 128 110 137 96 126"/>
+          <!-- 4. Branch left -->
+          <path d="M25 170 C8 158 -2 142 4 129 C10 116 25 122 25 138"/>
+          <!-- 5. Top leaf left -->
+          <path d="M25 58 C11 49 5 35 12 24 C19 13 25 20 25 34"/>
+          <!-- 6. Top leaf right -->
+          <path d="M25 46 C39 37 44 23 38 12 C32 1 25 8 25 22"/>
+          <!-- 7. Flower bud -->
+          <path d="M25 6 C18 -2 20 -12 25 -14 C30 -12 32 -2 25 6"/>
+          <!-- 8. Tendril left -->
+          <path d="M25 6 C14 1 10 -9 16 -15"/>
+          <!-- 9. Tendril right -->
+          <path d="M25 6 C36 1 40 -9 34 -15"/>
+        </svg>
       </div>
 
     </div>
@@ -1380,6 +1474,36 @@
       } else {
         window.addEventListener('load', buildGallery);
       }
+
+      /* ── BOTANICAL GROWTH ─────────────────
+         Paths draw sequentially: stem → leaves
+         low to high → flower head.
+         getTotalLength() gives the exact dash
+         value for every path shape.
+      ─────────────────────────────────────── */
+      document.querySelectorAll('.botanical').forEach(svg => {
+        const paths = Array.from(svg.querySelectorAll('path'));
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: svg.closest('section') || svg.closest('.gallery__header') || svg.parentElement,
+            start: 'top 72%',
+            end: 'bottom 18%',
+            scrub: 2,
+          }
+        });
+
+        paths.forEach((path, i) => {
+          const len = path.getTotalLength();
+          path.style.strokeDasharray = len;
+          path.style.strokeDashoffset = len;
+          tl.to(path, {
+            strokeDashoffset: 0,
+            ease: 'power1.inOut',
+            duration: 1,
+          }, i * 0.45); // each path starts 0.45 units after the previous
+        });
+      });
 
     } else if (prefersReducedMotion) {
       // Reduced motion: show morning chapter statically
