@@ -301,10 +301,10 @@
       background-color: var(--dawn);
     }
 
-    /* ── Image layers ── */
+    /* ── Image layers — full-bleed, veiled on the left for text ── */
     .day__img {
       position: absolute;
-      inset: 0 0 0 45%;  /* right 55% of section */
+      inset: 0;
       opacity: 0;
       will-change: opacity;
     }
@@ -316,7 +316,24 @@
       object-position: center;
     }
 
-    #img-morning { opacity: 1; }
+    /* Gradient veil carries the chapter colour over the photo's left side */
+    .day__img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        var(--veil) 0%,
+        var(--veil) 26%,
+        color-mix(in srgb, var(--veil) 55%, transparent) 52%,
+        transparent 78%
+      );
+    }
+
+    #img-morning  { opacity: 1; --veil: var(--dawn); }
+    #img-ceremony { --veil: var(--ceremony-bg); }
+    #img-golden   { --veil: var(--golden); }
+    #img-evening  { --veil: var(--dusk); }
 
     /* ── Chapter text ── */
     /* ── Ghost timestamps — fill the left field, encode the passing day ── */
@@ -778,8 +795,10 @@
       .hero__content   { padding-bottom: clamp(130px, 18vh, 170px); }
       .hero__strip img { height: 72px; }
 
-      /* Day section: hide images, show bg colour + text only */
-      .day__img        { display: none; }
+      /* Day section: full-bleed images with heavier veil for legibility */
+      .day__img::after {
+        background: color-mix(in srgb, var(--veil) 80%, transparent);
+      }
       .day__content    { width: 100%; padding-inline: clamp(24px, 6vw, 44px); }
 
       /* Gallery: single column on mobile */
