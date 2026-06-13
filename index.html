@@ -519,52 +519,57 @@
 
     /* ─── ABOUT ───────────────────────────── */
     .about {
-      padding: 0;
+      position: relative;
       overflow: hidden;
+      min-height: clamp(600px, 88vh, 960px);
     }
 
-    /* Full-bleed grid — no wrap constraint, image bleeds to left edge */
-    .about__inner {
-      display: grid;
-      grid-template-columns: 50vw 1fr;
-      gap: 0;
-      align-items: stretch;
-      min-height: clamp(560px, 85vh, 900px);
+    /* Full-bleed background image */
+    .about__bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1496614932623-0a3a9743552e?w=1920&auto=format&fit=crop&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      transition: transform 1.8s cubic-bezier(0.25, 0, 0.1, 1);
     }
 
-    .about__img-wrap {
-      overflow: hidden;
-      border-radius: 0;
-      height: 100%;
+    .about.in .about__bg { transform: scale(1); }
+
+    /* Gradient scrim — text-side dark, image-side clear */
+    .about__scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(14, 12, 10, 0.86) 0%,
+        rgba(14, 12, 10, 0.62) 38%,
+        rgba(14, 12, 10, 0.18) 66%,
+        transparent 100%
+      );
     }
 
-    .about__img-wrap img {
-      width: 100%;
-      height: 100%;
-      aspect-ratio: unset;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-      transform: scale(1.05);
-      transition: transform 1.6s cubic-bezier(0.25, 0, 0.1, 1);
-    }
-
-    .about__img-wrap.in img {
-      transform: scale(1);
-    }
-
-    /* Text column — its own internal padding replaces the old wrap */
+    /* Text sits on the left, over the scrim */
     .about__text {
+      position: relative;
+      z-index: 2;
+      max-width: clamp(360px, 44vw, 580px);
+      padding: clamp(56px, 10vh, 120px) clamp(40px, 8vw, 120px);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(48px, 8vh, 100px) clamp(40px, 7vw, 110px);
+      min-height: clamp(600px, 88vh, 960px);
     }
 
-    .about__text .eyebrow { display: block; margin-bottom: 22px; }
-    .about__text h2       { margin-bottom: 28px; }
-    .about__text p        { margin-bottom: 18px; }
+    .about__text .eyebrow { display: block; margin-bottom: 22px; color: rgba(249,247,245,0.55); }
+    .about__text h2       { margin-bottom: 28px; color: #F9F7F5; }
+    .about__text p        { margin-bottom: 18px; color: rgba(249,247,245,0.7); }
     .about__text p:last-of-type { margin-bottom: 36px; }
+    .about__text .link-arrow {
+      color: #F9F7F5;
+      border-bottom-color: rgba(249,247,245,0.45);
+    }
 
     .link-arrow {
       display: inline-flex;
@@ -813,9 +818,9 @@
 
     /* ─── RESPONSIVE ──────────────────────── */
     @media (max-width: 900px) {
-      .about__inner    { grid-template-columns: 1fr; min-height: auto; }
-      .about__img-wrap { height: clamp(280px, 70vw, 480px); }
-      .about__text     { padding: clamp(36px, 6vw, 56px) var(--gutter); }
+      .about           { min-height: 100svh; }
+      .about__text     { padding: clamp(40px, 8vw, 64px) var(--gutter); max-width: 100%; }
+      .about__scrim    { background: rgba(14,12,10,0.72); }
       .pkg-grid        { grid-template-columns: 1fr; max-width: 460px; }
     }
 
@@ -1166,14 +1171,8 @@
        ABOUT
   ═══════════════════════════════════════ -->
   <section class="about" id="about">
-    <div class="about__inner">
-
-      <div class="about__img-wrap" id="aboutImg">
-        <!-- REPLACE: editorial photographer portrait or intimate couple moment
-             Suggested: natural light, not smiling at camera, candid feel -->
-        <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=80&w=987&auto=format&fit=crop"
-             alt="Wedding photographer" width="700" height="875" loading="lazy" />
-      </div>
+    <div class="about__bg" aria-hidden="true"></div>
+    <div class="about__scrim" aria-hidden="true"></div>
 
       <div class="about__text">
         <span class="eyebrow reveal">— The photographer</span>
@@ -1392,8 +1391,9 @@
 
     /* ─── ABOUT IMAGE CLIP-PATH REVEAL ───── */
     // About image: observe via the same revealObserver as other elements
-    const aboutImg = document.getElementById('aboutImg');
-    if (aboutImg) revealObserver.observe(aboutImg);
+    // About section: observe the section itself for the bg zoom-settle
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) revealObserver.observe(aboutSection);
 
 
     /* ─── GSAP ───────────────────────────── */
