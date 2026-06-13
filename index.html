@@ -999,10 +999,7 @@
     <div class="gallery__header wrap">
       <div class="gallery__header-inner">
         <h2 class="reveal">The work<br>speaks.</h2>
-        <p class="gallery__hint reveal d2">
-          <span aria-hidden="true">← →</span>
-          Scroll to explore
-        </p>
+        <p class="gallery__hint reveal d2">Every wedding, every moment.</p>
       </div>
 
 </div>
@@ -1465,52 +1462,62 @@
         .to({}, { duration: 1.5 });  // dwell on evening
 
 
-      /* ── HORIZONTAL GALLERY ─────────────
-         Pins .gallery__stage. Translates
-         .gallery__track left by exactly the
-         amount needed to show all items.
-         Must run after window.load so image
-         widths are known before we measure.
-      ─────────────────────────────────── */
-      const galleryStage = document.getElementById('galleryStage');
-      const galleryTrack = document.getElementById('galleryTrack');
+      /* ── INFINITE GALLERY ───────────────────
+         Two rows, rAF-driven, no pin.
+         Main row scrolls left, secondary right
+         at 60% speed — same engine as filmstrip.
+         Both tracks clone their original items
+         until wide enough to loop seamlessly.
+      ─────────────────────────────────────── */
+      const galleryTrack    = document.getElementById('galleryTrack');
+      const secondaryTrack  = document.getElementById('galleryTrackSecondary');
 
-      const secondaryTrack = document.getElementById('galleryTrackSecondary');
-
-      const buildGallery = () => {
+      const initGallery = () => {
         if (window.innerWidth <= 768) return;
+        if (!galleryTrack || !secondaryTrack) return;
 
-        const scrollDist = galleryTrack.scrollWidth - window.innerWidth;
-        if (scrollDist <= 0) return;
+        // Snapshot originals before any cloning
+        const origMain = Array.from(galleryTrack.children);
+        const origSec  = Array.from(secondaryTrack.children);
 
-        // Secondary starts offset left so images approach from the left
-        // as the main row scrolls right-to-left — opposite directions, ~55% speed
-        const secStart = -(secondaryTrack.scrollWidth * 0.35);
-        gsap.set(secondaryTrack, { x: secStart });
+        // Clone until each track is at least 2.5× viewport wide
+        const target = window.innerWidth * 2.5;
+        while (galleryTrack.scrollWidth < target)
+          origMain.forEach(el => galleryTrack.appendChild(el.cloneNode(true)));
+        while (secondaryTrack.scrollWidth < target)
+          origSec.forEach(el => secondaryTrack.appendChild(el.cloneNode(true)));
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: galleryStage,
-            start: 'top top',
-            end: () => `+=${scrollDist}`,
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          }
-        });
+        // Width of one set = total ÷ number of sets added
+        const mainSetW = galleryTrack.scrollWidth  / (galleryTrack.children.length  / origMain.length);
+        const secSetW  = secondaryTrack.scrollWidth / (secondaryTrack.children.length / origSec.length);
 
-        // Main row: left at full speed
-        tl.to(galleryTrack,    { x: -scrollDist,                 ease: 'none' }, 0);
-        // Secondary: right at 55% speed (counter-scroll)
-        tl.to(secondaryTrack,  { x: secStart + scrollDist * 0.55, ease: 'none' }, 0);
+        // Secondary starts at −setWidth so it scrolls right revealing from the left
+        let mainX =  0;
+        let secX  = -secSetW;
+        secondaryTrack.style.transform = `translate3d(${secX}px, 0, 0)`;
+
+        const mainSpeed = 0.65;
+        const secSpeed  = 0.38;
+
+        const tick = () => {
+          mainX -= mainSpeed;
+          secX  += secSpeed;
+
+          if (mainX <= -mainSetW) mainX += mainSetW;  // reset left
+          if (secX  >=  0)        secX  -= secSetW;   // reset right
+
+          galleryTrack.style.transform   = `translate3d(${mainX}px, 0, 0)`;
+          secondaryTrack.style.transform = `translate3d(${secX}px, 0, 0)`;
+          requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
       };
 
-      // Use load event — not rAF — so all image widths are computed
       if (document.readyState === 'complete') {
-        buildGallery();
+        initGallery();
       } else {
-        window.addEventListener('load', buildGallery);
+        window.addEventListener('load', initGallery);
       }
 
     } else if (prefersReducedMotion) {
