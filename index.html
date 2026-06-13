@@ -454,7 +454,10 @@
       overflow: hidden;
       height: 100vh;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(16px, 3vh, 36px);
+      padding-block: clamp(28px, 5vh, 56px);
     }
 
     .gallery__track {
@@ -472,23 +475,36 @@
       overflow: hidden;
     }
 
-    /* Varying dimensions for visual rhythm */
-    .gallery__item:nth-child(1)  { width: clamp(240px, 26vw, 360px); height: clamp(310px, 42vh, 480px); }
-    .gallery__item:nth-child(2)  { width: clamp(280px, 30vw, 420px); height: clamp(360px, 50vh, 540px); margin-bottom: 30px; }
-    .gallery__item:nth-child(3)  { width: clamp(200px, 20vw, 280px); height: clamp(280px, 38vh, 420px); }
-    .gallery__item:nth-child(4)  { width: clamp(300px, 34vw, 460px); height: clamp(340px, 46vh, 510px); margin-bottom: 30px; }
-    .gallery__item:nth-child(5)  { width: clamp(220px, 24vw, 320px); height: clamp(300px, 40vh, 460px); }
-    .gallery__item:nth-child(6)  { width: clamp(260px, 28vw, 380px); height: clamp(320px, 44vh, 490px); margin-bottom: 30px; }
-    .gallery__item:nth-child(7)  { width: clamp(300px, 32vw, 440px); height: clamp(340px, 46vh, 510px); }
-    .gallery__item:nth-child(8)  { width: clamp(220px, 22vw, 300px); height: clamp(300px, 42vh, 480px); margin-bottom: 30px; }
-    .gallery__item:nth-child(9)  { width: clamp(280px, 30vw, 420px); height: clamp(320px, 44vh, 500px); }
-    .gallery__item:nth-child(10) { width: clamp(240px, 26vw, 360px); height: clamp(340px, 48vh, 520px); margin-bottom: 30px; }
-    .gallery__item:nth-child(11) { width: clamp(260px, 28vw, 380px); height: clamp(310px, 42vh, 480px); }
-    .gallery__item:nth-child(12) { width: clamp(310px, 34vw, 460px); height: clamp(350px, 48vh, 530px); margin-bottom: 30px; }
-    .gallery__item:nth-child(13) { width: clamp(220px, 24vw, 320px); height: clamp(300px, 40vh, 460px); }
-    .gallery__item:nth-child(14) { width: clamp(280px, 30vw, 420px); height: clamp(330px, 46vh, 510px); margin-bottom: 30px; }
-    .gallery__item:nth-child(15) { width: clamp(300px, 32vw, 440px); height: clamp(340px, 44vh, 500px); }
-    .gallery__item:nth-child(16) { width: clamp(240px, 26vw, 360px); height: clamp(320px, 44vh, 490px); margin-bottom: 30px; }
+    /* Main row — varying dimensions, taller to fill the viewport */
+    .gallery__track > .gallery__item:nth-child(1)  { width: clamp(240px, 26vw, 360px); height: clamp(38vh, 48vh, 520px); }
+    .gallery__track > .gallery__item:nth-child(2)  { width: clamp(280px, 30vw, 420px); height: clamp(44vh, 56vh, 600px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(3)  { width: clamp(200px, 20vw, 280px); height: clamp(36vh, 46vh, 500px); }
+    .gallery__track > .gallery__item:nth-child(4)  { width: clamp(300px, 34vw, 460px); height: clamp(40vh, 52vh, 560px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(5)  { width: clamp(220px, 24vw, 320px); height: clamp(38vh, 48vh, 520px); }
+    .gallery__track > .gallery__item:nth-child(6)  { width: clamp(260px, 28vw, 380px); height: clamp(40vh, 52vh, 560px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(7)  { width: clamp(300px, 32vw, 440px); height: clamp(38vh, 50vh, 540px); }
+    .gallery__track > .gallery__item:nth-child(8)  { width: clamp(220px, 22vw, 300px); height: clamp(36vh, 48vh, 520px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(9)  { width: clamp(280px, 30vw, 420px); height: clamp(40vh, 52vh, 560px); }
+    .gallery__track > .gallery__item:nth-child(10) { width: clamp(240px, 26vw, 360px); height: clamp(42vh, 54vh, 580px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(11) { width: clamp(260px, 28vw, 380px); height: clamp(38vh, 50vh, 540px); }
+    .gallery__track > .gallery__item:nth-child(12) { width: clamp(310px, 34vw, 460px); height: clamp(42vh, 54vh, 580px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(13) { width: clamp(220px, 24vw, 320px); height: clamp(38vh, 50vh, 540px); }
+    .gallery__track > .gallery__item:nth-child(14) { width: clamp(280px, 30vw, 420px); height: clamp(40vh, 52vh, 560px); margin-bottom: 20px; }
+    .gallery__track > .gallery__item:nth-child(15) { width: clamp(300px, 32vw, 440px); height: clamp(38vh, 50vh, 540px); }
+    .gallery__track > .gallery__item:nth-child(16) { width: clamp(240px, 26vw, 360px); height: clamp(40vh, 52vh, 560px); margin-bottom: 20px; }
+
+    /* Secondary row — uniform smaller height, overrides nth-child above */
+    .gallery__track--secondary {
+      align-items: center;
+      gap: 10px;
+      opacity: 0.82;
+    }
+    .gallery__track--secondary .gallery__item {
+      width: clamp(160px, 18vw, 260px) !important;
+      height: clamp(110px, 16vh, 190px) !important;
+      margin-bottom: 0 !important;
+      border-radius: 8px;
+    }
 
     .gallery__item img {
       width: 100%; height: 100%;
@@ -801,10 +817,11 @@
       }
       .day__content    { width: 100%; padding-inline: clamp(24px, 6vw, 44px); }
 
-      /* Gallery: single column on mobile */
-      .gallery__stage  { height: auto; overflow: visible; }
+      /* Gallery: single column on mobile, hide secondary row */
+      .gallery__stage  { height: auto; overflow: visible; flex-direction: column; }
       .gallery__track  { flex-wrap: wrap; width: 100%; padding-inline: var(--gutter); gap: 10px; }
-      .gallery__item   { width: calc(50% - 5px) !important; height: 200px !important; margin-bottom: 0 !important; border-radius: 8px; }
+      .gallery__track--secondary { display: none; }
+      .gallery__track > .gallery__item { width: calc(50% - 5px) !important; height: 200px !important; margin-bottom: 0 !important; border-radius: 8px; }
 
       /* About: tighten */
       .about__inner    { gap: 32px; }
@@ -1080,6 +1097,47 @@
                alt="Wedding gallery 16" loading="lazy" width="480" height="490" />
         </div>
 
+
+      </div>
+
+      <!-- Secondary row: smaller images scrolling in the opposite direction -->
+      <div class="gallery__track gallery__track--secondary" id="galleryTrackSecondary">
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1684597619632-471f18b09d12?q=80&w=1771&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=80&w=987&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1604017011826-d3b4c23f8914?q=80&w=1770&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=1770&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1680695605446-600ab4c8145a?q=80&w=987&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1573676048035-9c2a72b6a12a?q=80&w=1771&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1770301312795-abdc6deee5a8?q=80&w=987&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1532454781337-fc3edff34f91?q=80&w=1770&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1680695779444-24fc71296e66?q=80&w=1770&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=987&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1684597619632-471f18b09d12?q=80&w=1771&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
+        <div class="gallery__item">
+          <img src="https://images.unsplash.com/photo-1519741196428-6a2175fa2557?q=80&w=987&auto=format&fit=crop" alt="" loading="lazy" />
+        </div>
       </div>
     </div>
 
@@ -1417,15 +1475,20 @@
       const galleryStage = document.getElementById('galleryStage');
       const galleryTrack = document.getElementById('galleryTrack');
 
+      const secondaryTrack = document.getElementById('galleryTrackSecondary');
+
       const buildGallery = () => {
         if (window.innerWidth <= 768) return;
 
         const scrollDist = galleryTrack.scrollWidth - window.innerWidth;
         if (scrollDist <= 0) return;
 
-        gsap.to(galleryTrack, {
-          x: -scrollDist,
-          ease: 'none',
+        // Secondary starts offset left so images approach from the left
+        // as the main row scrolls right-to-left — opposite directions, ~55% speed
+        const secStart = -(secondaryTrack.scrollWidth * 0.35);
+        gsap.set(secondaryTrack, { x: secStart });
+
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: galleryStage,
             start: 'top top',
@@ -1436,6 +1499,11 @@
             invalidateOnRefresh: true,
           }
         });
+
+        // Main row: left at full speed
+        tl.to(galleryTrack,    { x: -scrollDist,                 ease: 'none' }, 0);
+        // Secondary: right at 55% speed (counter-scroll)
+        tl.to(secondaryTrack,  { x: secStart + scrollDist * 0.55, ease: 'none' }, 0);
       };
 
       // Use load event — not rAF — so all image widths are computed
