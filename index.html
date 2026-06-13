@@ -519,25 +519,31 @@
 
     /* ─── ABOUT ───────────────────────────── */
     .about {
-      padding: var(--pad) 0;
+      padding: 0;
+      overflow: hidden;
     }
 
+    /* Full-bleed grid — no wrap constraint, image bleeds to left edge */
     .about__inner {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(40px, 6vw, 88px);
-      align-items: center;
+      grid-template-columns: 50vw 1fr;
+      gap: 0;
+      align-items: stretch;
+      min-height: clamp(560px, 85vh, 900px);
     }
 
     .about__img-wrap {
       overflow: hidden;
-      border-radius: 2px;
+      border-radius: 0;
+      height: 100%;
     }
 
     .about__img-wrap img {
       width: 100%;
-      aspect-ratio: 4/5;
+      height: 100%;
+      aspect-ratio: unset;
       object-fit: cover;
+      object-position: center top;
       display: block;
       transform: scale(1.05);
       transition: transform 1.6s cubic-bezier(0.25, 0, 0.1, 1);
@@ -545,6 +551,14 @@
 
     .about__img-wrap.in img {
       transform: scale(1);
+    }
+
+    /* Text column — its own internal padding replaces the old wrap */
+    .about__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(48px, 8vh, 100px) clamp(40px, 7vw, 110px);
     }
 
     .about__text .eyebrow { display: block; margin-bottom: 22px; }
@@ -799,7 +813,9 @@
 
     /* ─── RESPONSIVE ──────────────────────── */
     @media (max-width: 900px) {
-      .about__inner    { grid-template-columns: 1fr; }
+      .about__inner    { grid-template-columns: 1fr; min-height: auto; }
+      .about__img-wrap { height: clamp(280px, 70vw, 480px); }
+      .about__text     { padding: clamp(36px, 6vw, 56px) var(--gutter); }
       .pkg-grid        { grid-template-columns: 1fr; max-width: 460px; }
     }
 
@@ -1150,7 +1166,7 @@
        ABOUT
   ═══════════════════════════════════════ -->
   <section class="about" id="about">
-    <div class="about__inner wrap">
+    <div class="about__inner">
 
       <div class="about__img-wrap" id="aboutImg">
         <!-- REPLACE: editorial photographer portrait or intimate couple moment
